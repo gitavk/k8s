@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: exercise
+  name: exercise
+  namespace: task-2
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: exercise
+  template:
+    metadata:
+      labels:
+        app: exercise
+    spec:
+      nodeSelector:
+        topology.kubernetes.io/zone: eu-east-1c
+      containers:
+      - image: k8s.gcr.io/pause:3.3
+        imagePullPolicy: IfNotPresent
+        name: exercise
