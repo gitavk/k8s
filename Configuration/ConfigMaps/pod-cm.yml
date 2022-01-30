@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: user-pod
+spec:
+  containers:
+    - name: test-container
+      image: busybox:1.34
+      command:
+      - sleep
+      - "4800"
+      env:
+        # Define the environment variable
+        - name: USER1
+          valueFrom:
+            configMapKeyRef:
+              # The ConfigMap containing the value you want to assign to SPECIAL_LEVEL_KEY
+              name: users-cm
+              # Specify the key associated with the value
+              key: user1
+        - name: USER2
+          valueFrom:
+            configMapKeyRef:
+              # The ConfigMap containing the value you want to assign to SPECIAL_LEVEL_KEY
+              name: users-cm
+              # Specify the key associated with the value
+              key: user2

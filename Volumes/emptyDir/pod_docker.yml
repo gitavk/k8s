@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: docker
+  labels:
+    app: docker
+spec:
+  containers:
+  - name: container-a
+    image: docker:dind
+    securityContext:
+      privileged: true
+    volumeMounts:
+    - mountPath: /var/lib/docker
+      name: shared-pod-volume
+
+  volumes:
+  - name: shared-pod-volume
+    emptyDir:
+      medium: Memory

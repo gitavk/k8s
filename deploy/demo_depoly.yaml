@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tomato
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: tomato
+  labels:
+    vegetable: tomato
+  name: tomato
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: tomato
+  template:
+    metadata:
+      labels:
+        app: tomato
+    spec:
+      containers:
+      - image: nginx:1.19-alpine
+        name: tomato
+        imagePullPolicy: IfNotPresent

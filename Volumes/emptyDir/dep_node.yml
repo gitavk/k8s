@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: akuzmin1-app
+  name: web-deployment-hostpath
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deploy: akuzmin1-app
+  template:
+    metadata:
+      labels:
+        deploy: akuzmin1-app
+    spec:
+      nodeName: node01
+      containers:
+      - image: nginx:alpine
+        name: n1
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html
+          name: shared-node-volume
+      volumes:
+      - name: shared-node-volume
+        hostPath:
+          path: /host-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-deployment-hostpath-svc
+spec:
+  type: NodePort
+  selector:
+    deploy: akuzmin1-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30083

@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-with-sc
+  labels:
+    pvc: 2gbi
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: playpit-labs-storage
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-with-sc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 3Gi
+  flexVolume:
+    driver: hpe.com/nimble
+  storageClassName: playpit-labs-storage
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: gold
+provisioner: kubernetes.io/gce-pd
+parameters:
+  type: pd-ssd

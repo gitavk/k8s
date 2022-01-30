@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: random-generator
+spec:
+  clusterIP: None
+  selector:
+    app: random-generator
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: random-generator
+spec:
+  # References the mandatory Service 
+  serviceName: random-generator
+  replicas: 3
+  selector:
+    matchLabels:
+      app: random-generator
+  template:
+    metadata:
+      labels:
+        app: random-generator
+    spec:
+      containers:
+      - image: sbeliakou/random-generator:1
+        name: main
+# volume and  volumeClaimTemplates
+        volumeMounts:
+        - name: logs
+          mountPath: /logs
+
+  volumeClaimTemplates:
+  - metadata:
+      name: logs
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 10Mi

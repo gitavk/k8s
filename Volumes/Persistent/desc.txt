@@ -1,0 +1,56 @@
+# kubectl describe po testing-pvc-sc
+Name:         testing-pvc-sc
+Namespace:    default
+Priority:     0
+Node:         master/172.31.0.2
+Start Time:   Mon, 24 Jan 2022 23:06:18 +0000
+Labels:       <none>
+Annotations:  <none>
+Status:       Pending
+IP:           
+IPs:          <none>
+Containers:
+  container-a:
+    Container ID:  
+    Image:         busybox:1.34
+    Image ID:      
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      sleep
+      infinity
+    State:          Waiting
+      Reason:       ContainerCreating
+    Ready:          False
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /data from volume-with-sc (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-sb2f2 (ro)
+Conditions:
+  Type              Status
+  Initialized       True 
+  Ready             False 
+  ContainersReady   False 
+  PodScheduled      True 
+Volumes:
+  volume-with-sc:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  pvc-with-sc
+    ReadOnly:   false
+  kube-api-access-sb2f2:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason       Age                   From               Message
+  ----     ------       ----                  ----               -------
+  Normal   Scheduled    5m20s                 default-scheduler  Successfully assigned default/testing-pvc-sc to master
+  Warning  FailedMount  21s (x4 over 4m43s)   kubelet            Unable to attach or mount volumes: unmounted volumes=[volume-with-sc], unattached volumes=[kube-api-access-sb2f2 volume-with-sc]: failed to get Plugin from volumeSpec for volume "pv-my-st-cl" err=no volume plugin matched
+  Warning  FailedMount  10s (x21 over 5m20s)  kubelet            Unable to attach or mount volumes: unmounted volumes=[volume-with-sc], unattached volumes=[volume-with-sc kube-api-access-sb2f2]: failed to get Plugin from volumeSpec for volume "pv-my-st-cl" err=no volume plugin matched

@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pd
+spec:
+  initContainers:
+  - image: image1
+    name: init-contanier-1
+    volumeMounts:
+    - mountPath: /dir1
+      name: pod-shared-volume
+
+  containers:
+  - image: image2
+    name: container-a
+    volumeMounts:
+    - mountPath: /dir2
+      name: pod-shared-volume
+
+  - image: image3
+    name: container-b
+    volumeMounts:
+    - mountPath: /dir3
+      name: pod-shared-volume
+
+  volumes:
+  - name: pod-shared-volume
+    emptyDir: {}

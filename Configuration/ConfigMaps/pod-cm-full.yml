@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cm-test-pod
+spec:
+  restartPolicy: Never
+  containers:
+    - name: test-container
+      image: k8s.gcr.io/busybox
+      command: 
+      - "/bin/sh"
+      - "-c"
+      - |
+        env
+        ls -la /etc/config/
+        echo /etc/config/game.properties
+        cat /etc/config/game.properties
+        cat /opt/config/ui.properties
+        cat /opt/config/ui.properties
+      
+      # Define the environment variable
+      env:
+        - name: RED_COLOR
+          valueFrom:
+            configMapKeyRef:
+              # The ConfigMap containing the value you want to assign to SPECIAL_LEVEL_KEY
+              name: palitra
+              # Specify the key associated with the value
+              key: RED
+
+      # Define all of the ConfigMap’s data as container environment variables
+      envFrom:
+      - configMapRef:
+          name: palitra
+
+      # Mounting Volume inside Container
+      volumeMounts:
+      - name: config-volume-all-from-game-config
+        mountPath /etc/config
+    
+      - name: config-volume-ui-properties
+        mountPath: /opt/config
+
+  # Add ConfigMap data to a Volume, Mounting Volume inside POD
+  volumes:
+    # All data from Config Map
+    - name: config-volume-all-from-game-config
+      configMap:
+        # Provide the name of the ConfigMap containing the files you want
+        # to add to the container
+        name: game-config
+    
+    # Specific data item form Config Map
+    - name: config-volume-ui-properties
+      configMap:
+        name: game-config
+        items:
+        - key: ui.properties
+          path: ui.properties:

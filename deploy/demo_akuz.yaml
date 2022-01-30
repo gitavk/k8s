@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: akuzmin1-app
+    student: akuzmin1
+  name: akuzmin1-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deploy: akuzmin1-app
+  template:
+    metadata:
+      labels:
+        deploy: akuzmin1-app
+        kind: redis
+        role: master
+        tier: db
+    spec:
+      containers:
+      - image: redis:5-alpine
+        name: redis-master
+        ports:
+        - containerPort: 6379
+      initContainers:
+      - name: init-akuzmin1-app
+        image: busybox:1.34
+        command:
+          - sleep
+          - "10"
