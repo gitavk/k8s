@@ -1,0 +1,13 @@
+apiVersion: certificates.k8s.io/v1
+kind: CertificateSigningRequest
+metadata:
+  name: akuzmin1
+spec:
+  signerName: kubernetes.io/kube-apiserver-client
+  request: put base64 encoded akuzmin1.csr here
+  groups:
+  - system:authenticated
+  usages:
+  - digital signature
+  - key encipherment
+  - client auth
